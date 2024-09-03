@@ -1,44 +1,50 @@
-// Display a welcome alert when the page loads
-window.onload = function() {
-    alert("Welcome to Umesh Samartapu's Portfolio!");
-};
-
-// Add click event listener to the "Home" navigation item
-document.getElementById('heade_nav_home').addEventListener('click', function() {
-    alert('You clicked on Home!');
-    // Additional logic can go here, e.g., navigating to a different section.
-});
-
-// Function to toggle between light and dark themes
-function toggleTheme() {
+// Function to switch themes
+function switchTheme(theme) {
     const body = document.body;
-    const currentTheme = body.classList.toggle('dark-theme'); // Toggle class for dark theme
 
-    // Update button text based on the theme
-    const themeButton = document.getElementById('themeButton');
-    if (currentTheme) {
-        themeButton.innerText = 'Switch to Light Mode';
-    } else {
-        themeButton.innerText = 'Switch to Dark Mode';
+    // Remove all theme classes
+    body.classList.remove('dark-theme', 'pastel-theme', 'monochrome-theme');
+
+    // Add selected theme class
+    if (theme !== 'Light') {
+        body.classList.add(theme.toLowerCase() + '-theme');
     }
 }
 
-// Add theme toggle button dynamically
-const themeButton = document.createElement('button');
-themeButton.id = 'themeButton';
-themeButton.innerText = 'Switch to Dark Mode';
-themeButton.style.position = 'fixed';
-themeButton.style.bottom = '100px';
-themeButton.style.right = '20px';
-themeButton.style.padding = '10px 20px';
-themeButton.style.backgroundColor = '#0077cc';
-themeButton.style.color = '#fff';
-themeButton.style.border = 'none';
-themeButton.style.borderRadius = '5px';
-themeButton.style.cursor = 'pointer';
+// Create and style the palette button
+const paletteButton = document.createElement('button');
+paletteButton.className = 'palette-button';
+paletteButton.innerText = 'Switch Palette';
+document.body.appendChild(paletteButton);
 
-// Append the button to the body
-document.body.appendChild(themeButton);
+// Create the dropdown menu for selecting themes
+const themeDropdown = document.createElement('div');
+themeDropdown.style.position = 'fixed';
+themeDropdown.style.bottom = '150px';
+themeDropdown.style.right = '20px';
+themeDropdown.style.backgroundColor = '#fff';
+themeDropdown.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+themeDropdown.style.borderRadius = '5px';
+themeDropdown.style.display = 'none';
 
-// Add event listener to the theme toggle button
-themeButton.addEventListener('click', toggleTheme);
+// Populate the dropdown with theme options
+['Light', 'Dark', 'Pastel', 'Monochrome'].forEach(themeName => {
+    const themeOption = document.createElement('div');
+    themeOption.innerText = themeName;
+    themeOption.style.padding = '10px 20px';
+    themeOption.style.cursor = 'pointer';
+    themeOption.style.borderBottom = '1px solid #ddd';
+    themeOption.addEventListener('click', () => {
+        switchTheme(themeName);
+        themeDropdown.style.display = 'none'; // Hide dropdown after selection
+    });
+    themeDropdown.appendChild(themeOption);
+});
+
+// Append the dropdown to the body
+document.body.appendChild(themeDropdown);
+
+// Toggle dropdown visibility on palette button click
+paletteButton.addEventListener('click', () => {
+    themeDropdown.style.display = themeDropdown.style.display === 'none' ? 'block' : 'none';
+});
